@@ -44,8 +44,8 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyApp(){
-    val  context = LocalContext.current
+fun MyApp() {
+    val context = LocalContext.current
     val locationUtils = LocationUtils(context = context)
     DisplayLocation(locationUtils = locationUtils, context = context)
 
@@ -53,36 +53,53 @@ fun MyApp(){
 
 
 @Composable
-fun DisplayLocation(locationUtils: LocationUtils, context: Context){
+fun DisplayLocation(locationUtils: LocationUtils, context: Context) {
 
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
-        onResult = {permissions ->
+        onResult = { permissions ->
 
-            if (permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true && permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true){
-
-            }else{
-                val rationalPermission = ActivityCompat.shouldShowRequestPermissionRationale(context as MainActivity,Manifest.permission.ACCESS_FINE_LOCATION) && ActivityCompat.shouldShowRequestPermissionRationale(context as MainActivity,Manifest.permission.ACCESS_COARSE_LOCATION)
-                if (rationalPermission){
-                    Toast.makeText(context,"Please give the necessary Permissions!",Toast.LENGTH_LONG).show()
-                }else{
-                    Toast.makeText(context,"Please go to the setting and give the necessary Permissions!",Toast.LENGTH_LONG).show()
+            if (permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true && permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true) {
+                //TODO: Need to add code for get current locations.
+            } else {
+                val rationalPermission = ActivityCompat.shouldShowRequestPermissionRationale(
+                    context as MainActivity,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) && ActivityCompat.shouldShowRequestPermissionRationale(
+                    context as MainActivity,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+                if (rationalPermission) {
+                    Toast.makeText(
+                        context,
+                        "Please give the necessary Permissions!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Please go to the setting and give the necessary Permissions!",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
 
         })
 
-    Column(modifier = Modifier.fillMaxSize(),
+    Column(
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
-        ) {
+    ) {
         Button(onClick = {
-            if (locationUtils.hasLocationPermission(context)){
-            }else{
-                requestPermissionLauncher.launch(arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ))
+            if (locationUtils.hasLocationPermission(context)) {
+            } else {
+                requestPermissionLauncher.launch(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                )
 
             }
 
