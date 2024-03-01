@@ -10,6 +10,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,19 +25,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.curiozing.locationapp.ui.theme.LocationAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val locationViewModel: LocationViewModel = viewModel()
             LocationAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MyApp()
+                    MyApp(locationViewModel)
                 }
             }
         }
@@ -44,23 +47,23 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyApp() {
+fun MyApp(locationViewModel: LocationViewModel) {
     val context = LocalContext.current
     val locationUtils = LocationUtils(context = context)
-    DisplayLocation(locationUtils = locationUtils, context = context)
+    DisplayLocation(locationUtils = locationUtils, context = context, locationViewModel)
 
 }
 
 
 @Composable
-fun DisplayLocation(locationUtils: LocationUtils, context: Context) {
+fun DisplayLocation(locationUtils: LocationUtils, context: Context, locationViewModel: LocationViewModel) {
 
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
         onResult = { permissions ->
 
             if (permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true && permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true) {
-                //TODO: Need to add code for get current locations.
+                locationUtils.requestUpdatedLocation(locationViewModel)
             } else {
                 val rationalPermission = ActivityCompat.shouldShowRequestPermissionRationale(
                     context as MainActivity,
@@ -91,8 +94,10 @@ fun DisplayLocation(locationUtils: LocationUtils, context: Context) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Text(text = "${locationViewModel.location.value?.latitude} - ${locationViewModel.location.value?.longitude}")
         Button(onClick = {
             if (locationUtils.hasLocationPermission(context)) {
+                locationUtils.requestUpdatedLocation(locationViewModel)
             } else {
                 requestPermissionLauncher.launch(
                     arrayOf(
