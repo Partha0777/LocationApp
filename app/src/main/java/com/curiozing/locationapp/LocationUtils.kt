@@ -20,22 +20,26 @@ class LocationUtils(context: Context) {
 
 
     @Suppress("MissingPermission")
-    fun requestUpdatedLocation(locationViewModel: LocationViewModel){
+    fun requestUpdatedLocation(locationViewModel: LocationViewModel) {
         val locationRequest = LocationRequest.Builder(
             Priority.PRIORITY_HIGH_ACCURACY,
             1000
         ).build()
 
-        val callBack = object : LocationCallback(){
+        val callBack = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult.lastLocation?.let {
-                    val locationData = LocationData(it.latitude,it.longitude)
+                    val locationData = LocationData(it.latitude, it.longitude)
                     locationViewModel.update(locationData)
                 }
             }
         }
 
-        fusedLocationClient.requestLocationUpdates(locationRequest,callBack, Looper.getMainLooper())
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            callBack,
+            Looper.getMainLooper()
+        )
     }
 
     fun hasLocationPermission(context: Context): Boolean {
