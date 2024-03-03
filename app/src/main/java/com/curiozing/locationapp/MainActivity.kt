@@ -56,7 +56,11 @@ fun MyApp(locationViewModel: LocationViewModel) {
 
 
 @Composable
-fun DisplayLocation(locationUtils: LocationUtils, context: Context, locationViewModel: LocationViewModel) {
+fun DisplayLocation(
+    locationUtils: LocationUtils,
+    context: Context,
+    locationViewModel: LocationViewModel
+) {
 
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
