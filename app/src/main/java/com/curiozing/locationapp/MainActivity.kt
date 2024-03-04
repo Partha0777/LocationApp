@@ -98,7 +98,11 @@ fun DisplayLocation(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "${locationViewModel.location.value?.latitude} - ${locationViewModel.location.value?.longitude}")
+        Text(text = "${locationViewModel.location.value?.latitude} - ${locationViewModel.location.value?.longitude} \n Address: ${locationViewModel.location.value?.let {
+            locationUtils.getAddressFromLatLng(
+                it
+            )
+        }}")
         Button(onClick = {
             if (locationUtils.hasLocationPermission(context)) {
                 locationUtils.requestUpdatedLocation(locationViewModel)

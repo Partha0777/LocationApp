@@ -3,6 +3,8 @@ package com.curiozing.locationapp
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.os.Looper
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -11,9 +13,11 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import com.google.android.gms.maps.model.LatLng
 import java.security.Permission
+import java.util.Locale
 
-class LocationUtils(context: Context) {
+class LocationUtils(var context: Context) {
 
     val fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
@@ -50,5 +54,17 @@ class LocationUtils(context: Context) {
             context,
             Manifest.permission.ACCESS_COARSE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    fun getAddressFromLatLng(locationData: LocationData): String {
+        var geocoder = Geocoder(context, Locale.getDefault())
+        var coordinator = LatLng(locationData.latitude,locationData.longitude)
+
+        var addresses:MutableList<Address>? = geocoder.getFromLocation(coordinator.latitude,coordinator.longitude,1)
+
+        addresses?.let {
+            return it[0].toString()
+        }
+        return "No Address Found"
     }
 }
