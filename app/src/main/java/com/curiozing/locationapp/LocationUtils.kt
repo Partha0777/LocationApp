@@ -58,9 +58,10 @@ class LocationUtils(var context: Context) {
 
     fun getAddressFromLatLng(locationData: LocationData): String {
         var geocoder = Geocoder(context, Locale.getDefault())
-        var coordinator = LatLng(locationData.latitude,locationData.longitude)
+        var coordinator = LatLng(locationData.latitude, locationData.longitude)
 
-        var addresses:MutableList<Address>? = geocoder.getFromLocation(coordinator.latitude,coordinator.longitude,1)
+        var addresses: MutableList<Address>? =
+            geocoder.getFromLocation(coordinator.latitude, coordinator.longitude, 1)
 
         addresses?.let {
             return it[0].toString()
