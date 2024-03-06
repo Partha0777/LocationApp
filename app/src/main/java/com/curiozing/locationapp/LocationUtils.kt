@@ -19,7 +19,7 @@ import java.util.Locale
 
 class LocationUtils(var context: Context) {
 
-    val fusedLocationClient: FusedLocationProviderClient =
+    private val fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
 
 
@@ -57,10 +57,10 @@ class LocationUtils(var context: Context) {
     }
 
     fun getAddressFromLatLng(locationData: LocationData): String {
-        var geocoder = Geocoder(context, Locale.getDefault())
-        var coordinator = LatLng(locationData.latitude, locationData.longitude)
+        val geocoder = Geocoder(context, Locale.getDefault())
+        val coordinator = LatLng(locationData.latitude, locationData.longitude)
 
-        var addresses: MutableList<Address>? =
+        val addresses: MutableList<Address>? =
             geocoder.getFromLocation(coordinator.latitude, coordinator.longitude, 1)
 
         addresses?.let {
