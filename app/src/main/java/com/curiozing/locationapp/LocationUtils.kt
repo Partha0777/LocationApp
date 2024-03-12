@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.LatLng
 import java.security.Permission
 import java.util.Locale
 
+const val NO_ADDRESS_FOUND = "No Address Found"
 class LocationUtils(var context: Context) {
 
     private val fusedLocationClient: FusedLocationProviderClient =
@@ -66,6 +67,6 @@ class LocationUtils(var context: Context) {
         addresses?.let {
             return it[0].toString()
         }
-        return "No Address Found"
+        return NO_ADDRESS_FOUND
     }
 }
