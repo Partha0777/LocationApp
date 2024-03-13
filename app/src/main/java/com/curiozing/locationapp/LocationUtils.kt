@@ -18,6 +18,7 @@ import java.security.Permission
 import java.util.Locale
 
 const val NO_ADDRESS_FOUND = "No Address Found"
+
 class LocationUtils(var context: Context) {
 
     private val fusedLocationClient: FusedLocationProviderClient =
@@ -60,10 +61,8 @@ class LocationUtils(var context: Context) {
     fun getAddressFromLatLng(locationData: LocationData): String {
         val geocoder = Geocoder(context, Locale.getDefault())
         val coordinator = LatLng(locationData.latitude, locationData.longitude)
-
         val addresses: MutableList<Address>? =
             geocoder.getFromLocation(coordinator.latitude, coordinator.longitude, 1)
-
         addresses?.let {
             return it[0].toString()
         }

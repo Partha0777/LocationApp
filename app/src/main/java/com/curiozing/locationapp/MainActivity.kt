@@ -34,7 +34,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             val locationViewModel: LocationViewModel = viewModel()
             LocationAppTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -54,6 +53,8 @@ fun MyApp(locationViewModel: LocationViewModel) {
 
 }
 
+const val PERMISSION_REQUEST = "Please give the necessary Permissions!"
+const val PERMISSION_REQUEST_FROM_SETTINGS = "Please go to the setting and give the necessary Permissions!"
 
 @Composable
 fun DisplayLocation(
@@ -79,13 +80,13 @@ fun DisplayLocation(
                 if (rationalPermission) {
                     Toast.makeText(
                         context,
-                        "Please give the necessary Permissions!",
+                        PERMISSION_REQUEST,
                         Toast.LENGTH_LONG
                     ).show()
                 } else {
                     Toast.makeText(
                         context,
-                        "Please go to the setting and give the necessary Permissions!",
+                        PERMISSION_REQUEST_FROM_SETTINGS,
                         Toast.LENGTH_LONG
                     ).show()
                 }
