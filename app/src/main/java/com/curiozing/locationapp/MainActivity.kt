@@ -55,6 +55,7 @@ fun MyApp(locationViewModel: LocationViewModel) {
 
 const val PERMISSION_REQUEST = "Please give the necessary Permissions!"
 const val PERMISSION_REQUEST_FROM_SETTINGS = "Please go to the setting and give the necessary Permissions!"
+const val GET_LOCATIONS = "Get Location"
 
 @Composable
 fun DisplayLocation(
@@ -122,7 +123,7 @@ fun DisplayLocation(
             }
 
         }) {
-            Text(text = "Get Location")
+            Text(text = GET_LOCATIONS)
         }
     }
 }
